@@ -3,8 +3,11 @@
 
 #include "DS.h"
 
-#define STACK_INIT_SIZE 100
-#define STACKINCREMENT 10
+#define STACK_INIT_SIZE 	100
+#define STACK_INCREMENT 	10
+
+#define DS_STACK_EMPTY		1
+#define DS_STACK_FULL		2
 
 typedef int SElemType;
 
@@ -21,14 +24,14 @@ InitSqStack (
 
 DS_STATUS
 PushSqStack (
-	SqStack *S, 
-	SElemType e
+	SqStack 	*S, 
+	SElemType 	*Elem
 	);
 
 DS_STATUS 
 PopSqStack (
-	SqStack *S,
-	SElemType e
+	SqStack 	*S,
+	SElemType 	*Elem
 	);
 
 #endif

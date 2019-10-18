@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -20,8 +21,9 @@ typedef int DS_STATUS;
 #define DS_SUCCESS	0
 #define DS_
 
-typedef int INT32;
-typedef	unsigned int UINT32;
-typedef void VOID;
+typedef int 			INT32;
+typedef	unsigned int 	UINT32;
+typedef void 			VOID;
+typedef	bool			BOOLEAN;
 
 #endif
