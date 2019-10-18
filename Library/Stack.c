@@ -30,12 +30,16 @@ Stack_Clear (
 	return DS_SUCCESS;
 }
 
-DS_STATUS 
+BOOLEAN 
 IsEmptySqStack (
 	SqStack *S
 	)
 {
-	return DS_SUCCESS;
+	if (S->Top == S->Base) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
 }
 
 INT32
@@ -48,14 +52,15 @@ GetSqStackLength (
 
 DS_STATUS
 GetSqStackTop (
-	SqStack S, 
-	SElemType *e
+	SqStack 	S, 
+	SElemType 	*Elem
 	)
 {
 	if (S.Top == S.Base) {
 		return ERROR;
 	}
-	e = *(S.Top - 1);
+	*Elem = *(S.Top - 1);
+	
 	return DS_SUCCESS;
 }
 
@@ -66,33 +71,36 @@ PushSqStack (
 	)
 {
 	if (S->Top - S->Base >= S->StackSize) {
-		S->Base = (SElemType *)realloc(S->Base, (S->StackSize + STACKINCREMENT) * sizeof(SElemType));
+		S->Base = (SElemType *)realloc(S->Base, (S->StackSize + STACK_INCREMENT) * sizeof(SElemType));
 		if (!S->Base) {
 			exit(OVERFLOW);
 		}
 		S->Top = S->Base + S->StackSize;
-		S->StackSize += STACKINCREMENT;
+		S->StackSize += STACK_INCREMENT;
 	}
 	*S->Top = Elem;
 	S->Top++;
+
 	return DS_SUCCESS;
 }
 
 DS_STATUS 
 PopSqStack (
 	SqStack 	*S,
-	SElemType 	Elem
+	SElemType 	*Elem
 	)
 {
-	if (S->Top == S->Base)
-		return ERROR;
+	if (S->Top == S->Base) {
+		return DS_STACK_EMPTY;
+	}
 	S->Top--;
-	Elem = *(S->Top);
+	*Elem = *(S->Top);
+
 	return DS_SUCCESS;
 }
 
 DS_STATUS
-Stack_Traverse (
+TraverseSqStack (
 	SqStack 	S, 
 	DS_STATUS (*visit) ()
 	) 

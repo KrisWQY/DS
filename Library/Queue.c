@@ -1,51 +1,124 @@
 #include "Include/Queue.h"
 
 DS_STATUS
-InitLoopQueue (
-	LoopQueue 	*Q
+InitLinkQueue (
+	LinkQueue 	*Q
 	)
 {
-	Q->front = 0;
-	Q->rear = 0;
+	Q->Front = Q->Rear = (QueuePtr)malloc(sizeof(QNode));
+	if (Q->Front = NULL) {
+		exit(OVERFLOW);
+	} 
+	Q->Front->Next = NULL;
+	return DS_SUCCESS;
+}
+
+DS_STATUS
+DestoryLinkQueue (
+	LinkQueue 	*Q
+	)
+{
+	while (Q->Front != NULL) {
+		Q->Rear = Q->Rear->Next;
+		free(Q->Front);
+		Q->Front = Q->Rear;
+	}
+
+	return DS_SUCCESS;
+}
+
+DS_STATUS
+EnLinkQueue (
+	LinkQueue 	*Q,
+	QElemType	Elem
+	)
+{
+	QueuePtr	P;
+	
+	P = (QueuePtr)malloc(sizeof(QNode));
+	if (P == NULL) {
+		return exit(OVERFLOW);
+	}
+
+	P->Data = Elem;
+	P->Next = NULL;
+	Q->Rear->Next = P;
+	Q->Rear = P;
+
+	return DS_SUCCESS;
+}
+
+DS_STATUS
+DeLinkQueue (
+	LinkQueue 	*Q,
+	QElemType	*Elem
+	)
+{
+	QueuePtr	P;
+	P = (QueuePtr)malloc(sizeof(QNode));
+	
+	if (Q->Front == Q->Rear) {
+		return QUEUE_EMPTY;
+	}
+
+	P = Q->Front->Next;
+	Elem = P->Data;
+	Q->Front->Next = P->Next;
+	
+	if (Q->Rear == P) {
+		Q->Rear = Q->Front;
+	}
+	free(P);
+
+	return DS_SUCCESS;
+}
+
+DS_STATUS
+InitSqLoopQueue (
+	SqLoopQueue 	*Q
+	)
+{
+	Q->Front = 0;
+	Q->Rear = 0;
 	return OK;
 }
 
 UINT32
-GetLoopQueueLength (
-	LoopQueue 	Q
+GetSqLoopQueueLength (
+	SqLoopQueue 	Q
 	)
 {
-	return (Q.rear - Q.front + MAXSIZE) % MAXSIZE;
+	return (Q.Rear - Q.Front + MAXSIZE) % MAXSIZE;
 }
 
 DS_STATUS
-EnLoopQueue (
-	LoopQueue	*Q,
-	QElemType	e
+EnSqLoopQueue (
+	SqLoopQueue		*Q,
+	QElemType		Elem
 	)
 {
-	if ((Q->rear + 1) % MAXSIZE == Q->front) {
+	if ((Q->Rear + 1) % MAXSIZE == Q->Front) {
 		return QUEUE_FULL;
 	}
 
-	Q->data[Q->rear] = e;
-	Q->rear = (Q->rear + 1) % MAXSIZE;
+	Q->Data[Q->Rear] = Elem;
+	Q->Rear = (Q->Rear + 1) % MAXSIZE;
 
-	return OK;
+	return DS_SUCCESS;
 }
 
 DS_STATUS
-DeLoopQueue (
-	LoopQueue 	*Q,
-	QElemType	*e
+DeSqLoopQueue (
+	SqLoopQueue 	*Q,
+	QElemType		*e
 	) 
 {
-	if (Q->front == Q->rear) {
+	if (Q->Front == Q->Rear) {
 		return QUEUE_EMPTY;
 	}
 
-	*e = Q->data[Q->front];
-	Q->front = (Q->front + 1) % MAXSIZE;
+	*e = Q->Data[Q->Front];
+	Q->Front = (Q->Front + 1) % MAXSIZE;
 
 	return DS_SUCCESS;
 }
