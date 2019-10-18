@@ -1,4 +1,4 @@
-
+#include <Include/Stack.h>
 
 VOID
 ConvertDec2Oct (
@@ -12,7 +12,9 @@ ConvertDec2Oct (
 		Stack_Push(S, Dec % 8);
 	}
 
-	while ()
+	while (!IsEmptySqStack(S)) {
+		PopSqStack(S, )
+	}
 
 }
 
