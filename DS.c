@@ -1,58 +1,59 @@
-#include "Include/DS.h"
+#include "Include/Stack.h"
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <stdbool.h>
+#include <math.h>
 
-#define MAX(a, b) (((a) > (b)) ? (a) : (b))
-
-int thirdMax(int* nums, int numsSize){
-    int result[3] = {0};
+int findMaxConsecutiveOnes(int* nums, int numsSize){
     int idx;
-    int Flag = 0;
-    
-    switch (numsSize) {
-        case 1: return nums[0];
-            break;
-        case 2: return MAX(nums[0], nums[1]);
-            break;
-    }
-    
-    if (nums[0] > nums[1]) {
-        result[0] = nums[0];
-        result[1] = nums[1];
-    } else if (nums[0] < nums[1]) {
-        result[0] = nums[1];
-        result[1] = nums[0];
-    } else {
-        result[0] = nums[0];
-    }
-    
-    for (idx = 2; idx < numsSize; idx++) {
-        if (nums[idx] > result[0]) {
-            result[2] = result[1];
-            result[1] = result[0];
-            result[0] = nums[idx]; 
-        } else if (nums[idx] > result[1] && nums[idx] != result[0]) {
-            result[2] = result[1];
-            result[1] = nums[idx];
-            Flag = 1;
-        } else if (nums[idx] > result[2] && nums[idx] != result[1] && nums[idx] != result[0]) {
-            result[2] = nums[idx];
-            Flag = 1;
+    int cnt = 0;
+    int max = 0;
+    for (idx = 0; idx < numsSize; idx++) {
+        if (nums[idx]) {
+            cnt++;
+        } else {
+            max = cnt > max ? cnt : max;
+            cnt = 0;
         }
     }
     
-    if (result[0] != result[1] && result[1] != result[2] && Flag != 0) {
-        return result[2];
-    } else {
-        return result[0];
+    return max > cnt ? max : cnt;
+}
+
+int* sortedSquares(int* A, int ASize, int* returnSize) {
+    int idx;
+    int idx2;
+    int temp;
+
+    for (idx = 0; idx < ASize; idx++) {
+        A[idx] = (int)pow(A[idx], 2);
     }
+
+    for (idx = 0; idx < ASize - 1; idx++) {
+        for (idx2 = 0; idx2 < ASize - idx - 1; idx2++) {
+            if (A[idx2] > A[idx2 + 1]) {
+                temp = A[idx2];
+                A[idx2] = A[idx2 + 1];
+                A[idx2 + 1] = temp;
+            }
+        }
+    }
+
+    *returnSize = ASize;
+    return A;
 }
 
 int main()
 {
-    int nums[] = {2, 2, 2, 1};
-    int result;
-    int numsSize = sizeof(nums) / sizeof(nums[0]);
+    int nums[] = {-4, -1, 0, 3, 10};
+    int *result;
+    int resultSize = 0;
+    int size = sizeof(nums) / sizeof(nums[0]);
+    result = sortedSquares(nums, size, &resultSize);
 
-    result = thirdMax(nums, numsSize);
-    printf("result:%d\n", result);
+    for (int idx = 0; idx < resultSize; idx++) {
+        printf ("%d ", result[idx]);
+    }
+    
     return 0;
 }
